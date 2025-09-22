@@ -1,7 +1,7 @@
 "use client";
 
 
-import React, { Children, useEffect, useState } from "react";
+import React, { Children, use, useEffect, useState } from "react";
 import {
     IconArrowLeft,
     IconBrandTabler,
@@ -32,21 +32,20 @@ export default function DashboardLayout({
 export function SidebarDemo({ children }: Readonly<{ children: React.ReactNode }>) {
     
     // WIP: get rid of email AuthO
-    const {userId} = useParams();
+    const { user } = useParams();
 
-    
 
     const links = [
         {
             label: "Dashboard",
-            href: `/user/${userId}/`,
+            href: `/user/${user}/`,
             icon: (
                 <IconBrandTabler className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
             ),
         },
         {
             label: "Profile",
-            href: `/user/${userId}/profile`,
+            href: `/user/${user}/profile`,
             icon: (
                 <IconUserBolt className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
             ),
