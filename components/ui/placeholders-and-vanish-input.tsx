@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { redirect } from "next/navigation";
 
 export function PlaceholdersAndVanishInput({
   placeholders
@@ -10,13 +11,16 @@ export function PlaceholdersAndVanishInput({
   placeholders: string[];
 }) {
   const [currentPlaceholder, setCurrentPlaceholder] = useState(0);
+  const [email, setEmail] = useState<String>("")
 
+  
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const startAnimation = () => {
     intervalRef.current = setInterval(() => {
       setCurrentPlaceholder((prev) => (prev + 1) % placeholders.length);
     }, 3000);
   };
+
   const handleVisibilityChange = () => {
     if (document.visibilityState !== "visible" && intervalRef.current) {
       clearInterval(intervalRef.current); // Clear the interval when the tab is not visible
@@ -27,7 +31,7 @@ export function PlaceholdersAndVanishInput({
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
+    setEmail(e.target.value)
   };
 
   useEffect(() => {
@@ -160,6 +164,7 @@ export function PlaceholdersAndVanishInput({
     draw();
 
     const value = inputRef.current?.value || "";
+
     if (value && inputRef.current) {
       const maxX = newDataRef.current.reduce(
         (prev, current) => (current.x > prev ? current.x : prev),
@@ -173,7 +178,10 @@ export function PlaceholdersAndVanishInput({
     e.preventDefault();
     vanishAndSubmit();
 
-    console.log(e)
+    // WIP: handle redirect 
+    // console.log(email);
+    redirect(`/user/${email}`)
+
   };
 
   return (

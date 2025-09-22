@@ -1,8 +1,7 @@
 "use client";
 
 
-
-import React, { Children, useState } from "react";
+import React, { Children, useEffect, useState } from "react";
 import {
     IconArrowLeft,
     IconBrandTabler,
@@ -12,6 +11,7 @@ import {
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
+import { useParams, useSearchParams } from "next/navigation";
 
 
 
@@ -30,36 +30,36 @@ export default function DashboardLayout({
 
 
 export function SidebarDemo({ children }: Readonly<{ children: React.ReactNode }>) {
+    
+    // WIP: get rid of email AuthO
+    const {userId} = useParams();
+
+    
+
     const links = [
         {
             label: "Dashboard",
-            href: "#",
+            href: `/user/${userId}/`,
             icon: (
                 <IconBrandTabler className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
             ),
         },
         {
             label: "Profile",
-            href: "#",
+            href: `/user/${userId}/profile`,
             icon: (
                 <IconUserBolt className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
             ),
         },
         {
-            label: "Settings",
-            href: "#",
-            icon: (
-                <IconSettings className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
-            ),
-        },
-        {
             label: "Logout",
-            href: "#",
+            href: "/",
             icon: (
                 <IconArrowLeft className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
             ),
         },
     ];
+
     const [open, setOpen] = useState(false);
     return (
         <div
@@ -77,7 +77,7 @@ export function SidebarDemo({ children }: Readonly<{ children: React.ReactNode }
                             ))}
                         </div>
                     </div>
-                    <div>
+                    {/* <div>
                         <SidebarLink
                             link={{
                                 label: "Manu Arora",
@@ -93,7 +93,7 @@ export function SidebarDemo({ children }: Readonly<{ children: React.ReactNode }
                                 ),
                             }}
                         />
-                    </div>
+                    </div> */}
                 </SidebarBody>
             </Sidebar>
             <Dashboard children={children} />
@@ -115,7 +115,7 @@ const Dashboard = ({ children }: Readonly<{ children: React.ReactNode }>) => {
 export const Logo = () => {
     return (
         <a
-            href="#"
+            // href="#"
             className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-black"
         >
             <div className="h-5 w-6 shrink-0 rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm bg-black dark:bg-white opacity-40" />
@@ -133,7 +133,7 @@ export const Logo = () => {
 export const LogoIcon = () => {
     return (
         <a
-            href="#"
+            // href="#"
             className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-black"
         >
             <div className="h-5 w-6 shrink-0 rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm bg-black dark:bg-white opacity-40" />
