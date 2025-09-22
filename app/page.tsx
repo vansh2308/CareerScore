@@ -5,7 +5,6 @@ import React from "react";
 
 export default function Home() {
 
-
   return (
     <div className="h-screen w-screen bg-neutral-950 relative flex flex-col items-center justify-center antialiased">
       <div className="mx-auto p-4 flex flex-col justify-center">
