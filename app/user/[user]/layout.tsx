@@ -54,8 +54,9 @@ export function SidebarDemo({ children }: Readonly<{ children: React.ReactNode }
             label: "Logout",
             href: "/",
             icon: (
-                <IconArrowLeft className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
+                <IconArrowLeft className="h-5 w-5 shrink-0 text-red-500" />
             ),
+            classname: "text-red-500"
         },
     ];
 
@@ -103,7 +104,7 @@ export function SidebarDemo({ children }: Readonly<{ children: React.ReactNode }
 // Dummy dashboard component with content
 const Dashboard = ({ children }: Readonly<{ children: React.ReactNode }>) => {
     return (
-        <div className="flex h-full w-full flex-1 flex-col gap-2 border border-neutral-200 bg-white dark:border-neutral-700 dark:bg-neutral-900 overflow-y-scroll p-3 md:p-7 pb-0 md:pb-0 overflow-x-hidden">
+        <div className="flex h-full w-full flex-1 flex-col gap-2 border-l border-neutral-200 bg-white dark:border-neutral-700 dark:bg-neutral-900 overflow-y-scroll p-3 md:p-7 pb-0 md:pb-0 overflow-x-hidden">
             {children}
         </div>
     );
