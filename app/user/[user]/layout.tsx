@@ -30,8 +30,6 @@ export default function DashboardLayout({
 
 
 export function SidebarDemo({ children }: Readonly<{ children: React.ReactNode }>) {
-    
-    // WIP: get rid of email AuthO
     const { user } = useParams();
 
 
@@ -77,23 +75,6 @@ export function SidebarDemo({ children }: Readonly<{ children: React.ReactNode }
                             ))}
                         </div>
                     </div>
-                    {/* <div>
-                        <SidebarLink
-                            link={{
-                                label: "Manu Arora",
-                                href: "#",
-                                icon: (
-                                    <img
-                                        src="https://assets.aceternity.com/manu.png"
-                                        className="h-7 w-7 shrink-0 rounded-full"
-                                        width={50}
-                                        height={50}
-                                        alt="Avatar"
-                                    />
-                                ),
-                            }}
-                        />
-                    </div> */}
                 </SidebarBody>
             </Sidebar>
             <Dashboard children={children} />
@@ -104,7 +85,7 @@ export function SidebarDemo({ children }: Readonly<{ children: React.ReactNode }
 // Dummy dashboard component with content
 const Dashboard = ({ children }: Readonly<{ children: React.ReactNode }>) => {
     return (
-        <div className="flex h-full w-full flex-1 flex-col gap-2 border-l border-neutral-200 bg-white dark:border-neutral-700 dark:bg-neutral-900 overflow-y-scroll p-3 md:p-7 pb-0 md:pb-0 overflow-x-hidden">
+        <div className="flex h-full w-full flex-1 flex-col gap-2 border-l border-neutral-200 bg-white dark:border-neutral-700 dark:bg-neutral-900 overflow-y-scroll p-10 md:p-16 pb-0 md:pb-0 overflow-x-hidden">
             {children}
         </div>
     );

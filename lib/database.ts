@@ -1,7 +1,6 @@
 
 // lib/database.js
 
-import { NextResponse } from "next/server";
 import { supabase } from "./supabaseClient"
 
 
