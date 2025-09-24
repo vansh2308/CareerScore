@@ -32,8 +32,8 @@ export async function POST(req: Request) {
     await saveToken(user.id, token);
   }
 
-  const testAccount = await nodemailer.createTestAccount();
-  console.log('Test account created: ', testAccount)
+  // const testAccount = await nodemailer.createTestAccount();
+  // console.log('Test account created: ', testAccount)
 
   // Set up email transporter and send the magic link
   const transporter = nodemailer.createTransport({

@@ -47,9 +47,10 @@ export const getUserByEmail = async (email: String) => {
 export const getTokenData = async (token: String) => {
     const { data, error } = await supabase
         .from('magic_tokens')
-        .select('*')
+        .select()
         .eq('token', token)
         .single()
+
 
     if (error) throw new Error(error.message)
     if (new Date(data.expires_at) < new Date()) {
