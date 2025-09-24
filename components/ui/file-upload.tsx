@@ -1,8 +1,11 @@
+
 import { cn } from "@/lib/utils";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { IconUpload } from "@tabler/icons-react";
 import { useDropzone } from "react-dropzone";
+import { Button } from "./button";
+
 
 const mainVariant = {
   initial: {
@@ -31,13 +34,36 @@ export const FileUpload = ({
   onChange?: (files: File[]) => void;
 }) => {
   const [files, setFiles] = useState<File[]>([]);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<String>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+
 
   const handleFileChange = (newFiles: File[]) => {
     // setFiles((prevFiles) => [...prevFiles, ...newFiles]);
-    setFiles([newFiles[0]])
-    onChange && onChange(newFiles);
+    if (newFiles.length > 0) {
+
+      if (newFiles[0].size > 1 * 1024 * 1024) {
+        setErrorMessage("File Size greater than 1MB")
+        return
+      }
+      setFiles([newFiles[0]])
+      const url = URL.createObjectURL(newFiles[0]);
+      setPreviewUrl(url)
+      setErrorMessage("")
+      onChange && onChange(newFiles);
+    }
   };
+
+  useEffect(() => {
+    console.log(previewUrl)
+
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl])
 
   const handleClick = () => {
     fileInputRef.current?.click();
@@ -48,14 +74,27 @@ export const FileUpload = ({
     noClick: true,
     onDrop: handleFileChange,
     onDropRejected: (error) => {
+      setFiles([])
       console.log(error);
+      setErrorMessage(error[0].errors[0].code == "file-invalid-type" ? "Only .pdf accepted" : "File Size greater than 1MB")
     },
     accept: {
       'application/pdf': ['.pdf', 'application/pdf']
     },
     maxFiles: 1,
-    maxSize: 500000
+    maxSize: 1 * 1024 * 1024
   });
+
+
+  const handleSubmit = (e: React.MouseEvent) => {
+    e.stopPropagation();
+
+    if(files[0] && errorMessage == '') {
+      // WIP: Store file in bucket 
+
+    }
+
+  }
 
   return (
     <div className="w-full" {...getRootProps()}>
@@ -82,14 +121,36 @@ export const FileUpload = ({
           <p className="relative z-20 font-sans font-normal text-neutral-400 dark:text-neutral-400 text-base mt-2">
             Drag or drop your files here or click to upload
           </p>
-          <div className="relative w-full mt-10 max-w-xl mx-auto">
-            {files.length > 0 && files[0] && 
-              files.map((file, idx) => (
+          {
+            errorMessage &&
+            <p className="relative z-20 font-sans font-normal text-destructive text-xs mt-2">
+              {errorMessage}
+            </p>
+          }
+          <div className="relative w-full mt-5 max-w-xl mx-auto">
+
+            {files.length > 0 && files[0] && previewUrl && (
+              <>
+                <div className="relative w-full aspect-[16/18] mt-0">
+                  <object
+                    data={`${previewUrl}#toolbar=0`}
+                    type="application/pdf"
+                    className="w-full h-full rounded-lg shadow-lg"
+                  >
+                    <div className="flex items-center justify-center h-full bg-gray-100 rounded-lg">
+                      <p className="text-gray-500">
+                        PDF preview not available. <a href={previewUrl} className="text-blue-500 hover:underline" target="_blank" rel="noopener noreferrer">Click here to open</a>
+                      </p>
+                    </div>
+                  </object>
+                </div>
+
+
                 <motion.div
-                  key={"file" + idx}
-                  layoutId={idx === 0 ? "file-upload" : "file-upload-" + idx}
+                  key="file0"
+                  layoutId="file-upload"
                   className={cn(
-                    "relative overflow-hidden z-40 bg-white dark:bg-neutral-900 flex flex-col items-start justify-start md:h-24 p-4 mt-4 w-full mx-auto rounded-md",
+                    "relative overflow-hidden z-40 flex flex-col items-start justify-start md:h-24 p-4 mt-4 w-full mx-auto rounded-md !bg-transparent",
                     "shadow-sm"
                   )}
                 >
@@ -98,42 +159,46 @@ export const FileUpload = ({
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       layout
-                      className="text-base text-neutral-700 dark:text-neutral-300 truncate max-w-xs"
+                      className="text-neutral-700 dark:text-neutral-300 truncate max-w-xs text-sm"
                     >
-                      {file.name}
+                      {files[0].name}
                     </motion.p>
                     <motion.p
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       layout
-                      className="rounded-lg px-2 py-1 w-fit shrink-0 text-sm text-neutral-600 dark:bg-neutral-800 dark:text-white shadow-input"
+                      className="rounded-lg px-2 py-1 w-fit shrink-0 text-xs text-neutral-600 dark:bg-neutral-800 dark:text-white shadow-input"
                     >
-                      {(file.size / (1024 * 1024)).toFixed(2)} MB
+                      {(files[0].size / (1024 * 1024)).toFixed(2)} MB
                     </motion.p>
                   </div>
 
-                  <div className="flex text-sm md:flex-row flex-col items-start md:items-center w-full mt-2 justify-between text-neutral-600 dark:text-neutral-400">
-                    <motion.p
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      layout
-                      className="px-1 py-0.5 rounded-md bg-gray-100 dark:bg-neutral-800 "
-                    >
-                      {file.type}
-                    </motion.p>
-
+                  <div className="flex text-xs md:flex-row flex-col items-start md:items-center w-full justify-between text-neutral-600 dark:text-neutral-400">
                     <motion.p
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       layout
                     >
                       modified{" "}
-                      {new Date(file.lastModified).toLocaleDateString()}
+                      {new Date(files[0].lastModified).toLocaleDateString()}
                     </motion.p>
                   </div>
                 </motion.div>
-              ))}
-            {!files.length && (
+
+                <Button
+                  type="submit"
+                  variant="default"
+                  className="cursor-pointer w-full opacity-80 py-5 hover:opacity-100"
+                  onClick={(e) => handleSubmit(e)}
+                >
+                  Upload
+                </Button>
+
+              </>
+            )}
+
+
+            {files.length == 0 && (
               <motion.div
                 layoutId="file-upload"
                 variants={mainVariant}
@@ -186,11 +251,10 @@ export function GridPattern() {
           return (
             <div
               key={`${col}-${row}`}
-              className={`w-10 h-10 flex shrink-0 rounded-[2px] ${
-                index % 2 === 0
-                  ? "bg-gray-50 dark:bg-neutral-950"
-                  : "bg-gray-50 dark:bg-neutral-950 shadow-[0px_0px_1px_3px_rgba(255,255,255,1)_inset] dark:shadow-[0px_0px_1px_3px_rgba(0,0,0,1)_inset]"
-              }`}
+              className={`w-10 h-10 flex shrink-0 rounded-[2px] ${index % 2 === 0
+                ? "bg-gray-50 dark:bg-neutral-950"
+                : "bg-gray-50 dark:bg-neutral-950 shadow-[0px_0px_1px_3px_rgba(255,255,255,1)_inset] dark:shadow-[0px_0px_1px_3px_rgba(0,0,0,1)_inset]"
+                }`}
             />
           );
         })

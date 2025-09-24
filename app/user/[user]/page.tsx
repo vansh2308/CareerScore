@@ -65,7 +65,6 @@ export default function Dashboard() {
                     <DialogContent>
                         <DialogHeader>
                             <DialogTitle className="hidden"> Are you absolutely sure? </DialogTitle>
-                            {/* WIP: File type regex */}
                             {/* WIP: File preview */}
                             <FileUpload />
                         </DialogHeader>
