@@ -12,7 +12,8 @@ export async function GET(req: any) {
 
 
     if (!tokenData) {
-        return Response.json({ error: 'Invalid or expired token' })
+        console.error("Invalid or expired token")
+        return Response.redirect("http://localhost:3000/")
     }
 
     jwt.verify(token, process.env.JWT_SECRET!, (err: any, decoded: any) => {

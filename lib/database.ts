@@ -1,6 +1,7 @@
 
 // lib/database.js
 
+import { NextResponse } from "next/server";
 import { supabase } from "./supabaseClient"
 
 
@@ -51,8 +52,11 @@ export const getTokenData = async (token: String) => {
         .eq('token', token)
         .single()
 
+    if (error && error.code !== 'PGRST116') throw new Error(error.message)
 
-    if (error) throw new Error(error.message)
+    // redirect to home 
+    if(data == null) return data
+
     if (new Date(data.expires_at) < new Date()) {
         throw new Error('Token expired')
     }
