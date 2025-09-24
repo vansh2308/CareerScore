@@ -7,6 +7,7 @@ ___
 - [ ] Add Supabase
 - [ ] Add Profile Setup
 - [ ] Add Resume Upload & Preview 
+- [ ] Dynamic Resumes (Update resume preserving URL)
 
 
 ### Refs

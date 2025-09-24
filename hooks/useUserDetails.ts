@@ -1,7 +1,7 @@
 'use client'
 
 import { supabase } from "@/lib/supabaseClient";
-import { UserDetailType } from "@/src/types"
+import { UserDetailType } from "@/types"
 import { useEffect, useState } from "react"
 
 
