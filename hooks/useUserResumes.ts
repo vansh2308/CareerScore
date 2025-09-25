@@ -28,8 +28,6 @@ export default function useUserResumes({
 
                 if (error) throw error;
 
-                console.log(data?.length)
-
                 setUserResumes([...(data.map((item, key) => ({
                     resumeId: item.id,
                     link: item.link,
@@ -38,7 +36,7 @@ export default function useUserResumes({
                     size: item.size,
                     updatedAt: item.updated_at,
                     status: item.status,
-                    objectId: item.object_id
+                    ownerName: ''
                 })))]);
 
             } catch (err) {

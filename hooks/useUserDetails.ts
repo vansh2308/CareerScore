@@ -23,7 +23,8 @@ export default function useUserDetails({
                 if(error) throw error;
                 setUserDetails({
                     email: data.email,
-                    userId: data.id
+                    userId: data.id,
+                    role: data.role
                 });
 
             } catch (err) {

@@ -2,10 +2,10 @@
 
 export interface UserDetailType {
     userId: String,
-    email: String
+    email: String,
+    role: 'admin' | 'regular'
 }
 
-// WIP: Status 
 export interface ResumeType {
     resumeId: String,
     link: String,
@@ -13,6 +13,20 @@ export interface ResumeType {
     ownerId: String,
     size: Number,
     updatedAt: String,
-    status: 'Pending' | 'Approved' | 'Rejected',
+    status: 'Pending' | 'Approved' | 'Rejected' | 'Needs Revision',
+    ownerName: String
 }
 
+
+export interface DatabaseResumeResponse {
+    id: string;
+    updated_at: string;
+    name: string;
+    owner_id: string;
+    link: string;
+    size: number;
+    status: 'Pending' | 'Approved' | 'Rejected' | 'Needs Revision';
+    users: {
+        email: string;
+    };
+}

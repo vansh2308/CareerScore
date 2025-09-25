@@ -59,3 +59,4 @@ export const deleteFile = async (fileId: string) => {
         throw error;
     }
 }
+

@@ -104,6 +104,7 @@ export default function UserDashboard({user} : {user: string}) {
                         <TableHead>Size</TableHead>
                         <TableHead>Last Updated</TableHead>
                         <TableHead>Status</TableHead>
+                        <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
 
@@ -134,14 +135,18 @@ export default function UserDashboard({user} : {user: string}) {
                                         <TableCell>
                                             <Badge
                                                 variant="secondary"
-                                                className={resumeItem.status == 'Approved' ? "bg-green-400/10" : resumeItem.status == 'Pending' ? 'bg-amber-400/10' : 'bg-red-600/10'}
+                                                className={resumeItem.status == 'Approved' ? "bg-green-400/10" : resumeItem.status == 'Pending' ? 'bg-amber-400/10' : resumeItem.status == 'Needs Revision' ? 'bg-sky-600/10' : 'bg-red-600/10'}
                                                 asChild>
                                                 <div className="flex gap-2">
                                                     <div className={cn(
                                                         'rounded-full aspect-square w-2',
-                                                        resumeItem.status == 'Approved' ? "bg-green-400" : resumeItem.status == 'Pending' ? 'bg-amber-400' : 'bg-red-600'
+                                                        resumeItem.status == 'Approved' ? "bg-green-400" : resumeItem.status == 'Pending' ? 'bg-amber-400' : resumeItem.status == 'Needs Revision' ? 'bg-sky-500' :'bg-red-600'
                                                     )}></div>
-                                                    <p>Under Review</p>
+                                                    <p className={cn(
+                                                        resumeItem.status == 'Approved' ? "text-green-400" : resumeItem.status == 'Pending' ? 'text-amber-400' : resumeItem.status == 'Needs Revision' ? 'text-sky-500' : 'text-red-600'
+                                                    )}>
+                                                        {resumeItem.status}
+                                                    </p>
                                                 </div>
                                             </Badge>
                                         </TableCell>
