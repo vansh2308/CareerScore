@@ -4,6 +4,7 @@
 import jwt from 'jsonwebtoken'
 
 import { getTokenData, deleteUserToken } from "@/lib/database"
+import { NextResponse } from 'next/server'
 
 export async function GET(req: any) {
     const token = req.url.split('=')[1]
@@ -22,7 +23,11 @@ export async function GET(req: any) {
         }
     })
 
+    
+
     // Delete ONE-TIME token (just for security)
     await deleteUserToken(token)
-    return Response.redirect(`http://localhost:3000/user/${tokenData!.user_id}`) 
+    return NextResponse.redirect(`http://localhost:3000/user/${tokenData!.user_id}`) 
 }
+
+
