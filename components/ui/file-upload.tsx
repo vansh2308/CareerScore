@@ -5,6 +5,8 @@ import { motion } from "motion/react";
 import { IconUpload } from "@tabler/icons-react";
 import { useDropzone } from "react-dropzone";
 import { Button } from "./button";
+import { uploadFile } from "@/lib/resumeBucket";
+import { useParams } from "next/navigation";
 
 
 const mainVariant = {
@@ -33,10 +35,13 @@ export const FileUpload = ({
 }: {
   onChange?: (files: File[]) => void;
 }) => {
+  const { user } = useParams();
   const [files, setFiles] = useState<File[]>([]);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<String>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+
 
 
   const handleFileChange = (newFiles: File[]) => {
@@ -56,8 +61,6 @@ export const FileUpload = ({
   };
 
   useEffect(() => {
-    console.log(previewUrl)
-
     return () => {
       if (previewUrl) {
         URL.revokeObjectURL(previewUrl);
@@ -86,14 +89,23 @@ export const FileUpload = ({
   });
 
 
-  const handleSubmit = (e: React.MouseEvent) => {
+  const handleSubmit = async (e: React.MouseEvent) => {
     e.stopPropagation();
+
 
     if(files[0] && errorMessage == '') {
       // WIP: Store file in bucket 
+      console.log(files[0]);
+      try {
+        const {data, error} = await uploadFile(user as String, files[0]);
+        if(error) throw error
 
+        console.log(data)
+
+      } catch (error) {
+        console.error(error)
+      }
     }
-
   }
 
   return (
