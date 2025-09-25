@@ -22,19 +22,40 @@ export const uploadFile = async (ownerId: String, file: File) => {
 
 export const addFile = async (ownerId: String, fileID: string, file: File, fileLink: String) => {
 
-        const { data, error } = await supabase.from('resumes').insert({
-            id: fileID,
-            name: file.name,
-            owner_id: ownerId,
-            link: fileLink,
-            size: file.size,
-            status: 'Pending'
-        })
-        if (error) {
-            console.error(error);
-            throw error
-        }
+    const { data, error } = await supabase.from('resumes').insert({
+        id: fileID,
+        name: file.name,
+        owner_id: ownerId,
+        link: fileLink,
+        size: file.size,
+        status: 'Pending',
+    })
+    if (error) {
+        console.error(error);
+        throw error
+    }
 
-        return { data, error }
+    return { data, error }
 }
 
+
+
+export const deleteFile = async (fileId: string) => {
+    try {
+        const { error: storageError } = await supabase.storage.from('resume').remove([`${fileId}`]);
+        if (storageError) {
+            throw storageError;
+        }
+
+        const { data, error: dbError } = await supabase.from('resumes').delete().eq('id', fileId);
+        if (dbError) {
+            throw dbError;
+        }
+
+        return { success: true, data };
+
+    } catch (error) {
+        console.error('Error deleting file:', error);
+        throw error;
+    }
+}

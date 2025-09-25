@@ -37,7 +37,8 @@ export default function useUserResumes({
                     ownerId: item.owner_id,
                     size: item.size,
                     updatedAt: item.updated_at,
-                    status: item.status
+                    status: item.status,
+                    objectId: item.object_id
                 })))]);
 
             } catch (err) {
@@ -52,5 +53,5 @@ export default function useUserResumes({
         fetchUserResumes();
     }, [fetchUserResumes])
 
-    return { userResumes, resumeLoading, resumeError, resfreshResumes: fetchUserResumes };
+    return { userResumes, setUserResumes, resumeLoading, resumeError, resfreshResumes: fetchUserResumes };
 }

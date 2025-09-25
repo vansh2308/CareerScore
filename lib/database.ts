@@ -68,3 +68,5 @@ export const deleteUserToken = async (token: String) => {
     if (error) throw new Error(error.message)
     return data
 }
+
+

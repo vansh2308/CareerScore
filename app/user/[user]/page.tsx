@@ -14,7 +14,6 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { Button } from "@/components/ui/button";
 import { IconPlus, IconTrash, IconEyeFilled } from "@tabler/icons-react";
 import {
     Dialog,
@@ -29,21 +28,32 @@ import useUserResumes from "@/hooks/useUserResumes";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import clsx from "clsx";
 import { useCallback, useState } from "react";
+import { deleteFile } from "@/lib/resumeBucket";
+import { toast } from "sonner";
 
 
 
 export default function Dashboard() {
     const { user } = useParams();
     const { userDetails, loading, error } = useUserDetails({ userId: user as String });
-    const { userResumes, resumeLoading, resumeError, resfreshResumes } = useUserResumes({ userId: user as String });
+    const { userResumes, setUserResumes, resumeLoading, resumeError, resfreshResumes } = useUserResumes({ userId: user as String });
     const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
     const handleUploadSuccess = useCallback(() => {
         setIsDialogOpen(false)
         resfreshResumes();
     }, [resfreshResumes])
+
+    const handleResumeDelete = async (e: React.MouseEvent, targetResumeId: String) => {
+        // WIP: Delete from db & bucket 
+        const { success, data } = await deleteFile(targetResumeId as string);
+
+        if(success) {   
+            toast('Resume Deleted')
+            setUserResumes((userResumes) => (userResumes.filter(resume => resume.resumeId != targetResumeId)))
+        }
+    }
 
     return (
         <main className="min-h-fit h-full w-full max-w-full">
@@ -136,7 +146,11 @@ export default function Dashboard() {
                                             </Badge>
                                         </TableCell>
                                         <TableCell>
-                                            <IconTrash className="w-5 hover:text-destructive" />
+                                            {/* WIP: Add confirmation modal  */}
+                                            <IconTrash
+                                                className="w-5 hover:text-destructive"
+                                                onClick={(e) => handleResumeDelete(e, resumeItem.resumeId)}
+                                            />
                                         </TableCell>
                                     </TableRow>
                                 ))

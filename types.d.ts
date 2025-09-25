@@ -13,6 +13,6 @@ export interface ResumeType {
     ownerId: String,
     size: Number,
     updatedAt: String,
-    status: 'Pending' | 'Approved' | 'Rejected'
+    status: 'Pending' | 'Approved' | 'Rejected',
 }
 
