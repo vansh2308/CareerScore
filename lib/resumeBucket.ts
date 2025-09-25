@@ -27,7 +27,8 @@ export const addFile = async (ownerId: String, fileID: string, file: File, fileL
             name: file.name,
             owner_id: ownerId,
             link: fileLink,
-            size: file.size
+            size: file.size,
+            status: 'Pending'
         })
         if (error) {
             console.error(error);

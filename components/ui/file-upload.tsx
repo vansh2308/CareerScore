@@ -1,3 +1,4 @@
+'use client'
 
 import { cn } from "@/lib/utils";
 import React, { useEffect, useRef, useState } from "react";
@@ -7,6 +8,7 @@ import { useDropzone } from "react-dropzone";
 import { Button } from "./button";
 import { uploadFile } from "@/lib/resumeBucket";
 import { useParams } from "next/navigation";
+import { toast } from "sonner";
 
 
 const mainVariant = {
@@ -32,8 +34,10 @@ const secondaryVariant = {
 
 export const FileUpload = ({
   onChange,
+  onUploadSuccess
 }: {
   onChange?: (files: File[]) => void;
+  onUploadSuccess?: () => void
 }) => {
   const { user } = useParams();
   const [files, setFiles] = useState<File[]>([]);
@@ -94,13 +98,16 @@ export const FileUpload = ({
 
 
     if(files[0] && errorMessage == '') {
-      // WIP: Store file in bucket 
-      console.log(files[0]);
+      // console.log(files[0]);
       try {
         const {data, error} = await uploadFile(user as String, files[0]);
-        if(error) throw error
+        if(error) {
+          throw error
+        }
 
-        console.log(data)
+        // console.log(data)
+        toast("File upload successful!")
+        onUploadSuccess?.();
 
       } catch (error) {
         console.error(error)
@@ -196,7 +203,7 @@ export const FileUpload = ({
                     </motion.p>
                   </div>
                 </motion.div>
-
+                
                 <Button
                   type="submit"
                   variant="default"
