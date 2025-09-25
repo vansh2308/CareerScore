@@ -1,3 +1,5 @@
+// WIP: Limit 5 resumes/user 
+
 'use client'
 
 import useUserDetails from "@/hooks/useUserDetails";
@@ -78,8 +80,6 @@ export default function Dashboard() {
                         <DialogHeader>
                             <DialogTitle className="hidden"> Are you absolutely sure? </DialogTitle>
 
-                            {/* WIP: Close dialog after pdf upload */}
-                            {/* WIP: Refresh resumes list here */}
                             <FileUpload onUploadSuccess={handleUploadSuccess} />
                         </DialogHeader>
                     </DialogContent>
