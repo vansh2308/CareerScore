@@ -15,6 +15,7 @@ import { useParams, useSearchParams } from "next/navigation";
 
 
 
+
 export default function DashboardLayout({
     children,
 }: Readonly<{
@@ -30,7 +31,8 @@ export default function DashboardLayout({
 
 
 export function SidebarDemo({ children }: Readonly<{ children: React.ReactNode }>) {
-    const { user } = useParams();
+    const params = useParams()
+    const user = params?.user as string
 
 
     const links = [

@@ -22,6 +22,7 @@ import { cn } from "@/lib/utils";
 import { useCallback, useEffect, useState } from "react";
 import useAllResumes from "@/hooks/useAllResumes";
 import { ResumeType } from "@/types";
+import Link from "next/link";
 
 
 
@@ -124,7 +125,7 @@ export default function AdminDashboard({ user }: { user: string }) {
             </div>
 
 
-            <Table className="mt-5">
+            <Table className="mt-5  overflow-y-scroll">
                 <TableHeader className="font-bold">
                     <TableRow>
                         <TableHead className="min-w-max">Name</TableHead>
@@ -191,7 +192,9 @@ export default function AdminDashboard({ user }: { user: string }) {
                                             </Badge>
                                         </TableCell>
                                         <TableCell>
-                                            <IconPencil className="w-5" />
+                                            <Link href={`/user/${user}/resume/${resumeItem.resumeId}`}>
+                                                <IconPencil className="w-5" />
+                                            </Link>
                                         </TableCell>
                                     </TableRow>
                                 ))
