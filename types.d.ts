@@ -14,7 +14,8 @@ export interface ResumeType {
     size: Number,
     updatedAt: String,
     status: 'Pending' | 'Approved' | 'Rejected' | 'Needs Revision',
-    ownerName: String
+    ownerName: String,
+    score: ScoreType
 }
 
 
@@ -29,4 +30,22 @@ export interface DatabaseResumeResponse {
     users: {
         email: string;
     };
+    structure_score: number,
+    relevance_score: number,
+    formatting_score: number,
+    keyword_score: number
+}
+
+
+export interface ScoreType {
+    structureScore: number,
+    relevanceScore: number,
+    formattingScore: number,
+    keywordsScore: number
+}
+
+export interface ResumeMessage {
+    by: 'admin' | 'owner',
+    content: string,
+    timestamp: string
 }

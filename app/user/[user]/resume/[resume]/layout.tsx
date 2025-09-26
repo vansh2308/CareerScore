@@ -5,6 +5,8 @@ import { cn } from "@/lib/utils";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
 
+// WIP: Add breadcrumb 
+
 
 
 export default function PreviewLayout({
@@ -15,11 +17,8 @@ export default function PreviewLayout({
     const params = useParams()
     const userId = params?.user as string
     const resumeId = params?.resume as string
-    const { resumeDetails, resumeLaoding, resumeError } = useResumeDetails({ resumeId })
+    const { resumeDetails, setResumeDetails, resumeLaoding, resumeError } = useResumeDetails({ resumeId })
 
-    useEffect(() => {
-        console.log(resumeDetails)
-    }, [resumeDetails])
 
     return (
         <div className="w-full flex flex-col overflow-hidden gap-3 min-h-max overflow-y-scroll pb-20">
@@ -28,7 +27,7 @@ export default function PreviewLayout({
                     <h1 className="font-extrabold text-4xl capitalize">{resumeDetails?.name.split('.')[0]}</h1>
 
                     {/* WIP: Replace ownerId by OwnerName  */}
-                    <h3 className="font-medium text-lg text-muted-foreground">{resumeDetails?.ownerId}</h3>
+                    <h3 className="font-bold text-[1rem] text-muted-foreground">{resumeDetails?.ownerName}</h3>
                 </div>
 
                 <div className="flex flex-col gap-3 items-end">
@@ -55,25 +54,25 @@ export default function PreviewLayout({
                     </h3>
                 </div>
             </div>
-            <div className="flex mt-10">
+            <div className="flex mt-10 gap-20">
 
 
-                <div className="relative w-full aspect-[16/13] mt-0">
+                <div className="relative w-[50%] mt-0  ">
                     <object
-                        data={`${process.env.NEXT_PUBLIC_SUPABASE_URL!}/storage/v1/object/public/${resumeDetails?.link}#toolbar=0&view=FitV`}
+                        data={`${process.env.NEXT_PUBLIC_SUPABASE_URL!}/storage/v1/object/public/${resumeDetails?.link}#toolbar=0&view=FitH`}
                         type="application/pdf"
-                        className="w-[60%] h-full rounded-lg shadow-lg"
+                        className="w-full aspect-[4/5] rounded-lg shadow-lg"
                     >
-                        <div className="flex items-center justify-center h-full bg-gray-100 rounded-lg">
+                        {/* <div className="flex items-center justify-center h-full bg-gray-100 rounded-lg">
                             <p className="text-gray-500">
-                                {/* PDF preview not available. <a href={previewUrl} className="text-blue-500 hover:underline" target="_blank" rel="noopener noreferrer">Click here to open</a> */}
+                                PDF preview not available. <a href={`${process.env.NEXT_PUBLIC_SUPABASE_URL!}/storage/v1/object/public/${resumeDetails?.link}#toolbar=0&view=FitH`} className="text-blue-500 hover:underline" target="_blank" rel="noopener noreferrer">Click here to open</a>
                             </p>
-                        </div>
+                        </div> */}
                     </object>
                 </div>
 
 
-                <div className="flex h-full w-full flex-1 flex-col gap-2 dark:border-neutral-700 overflow-y-scroll p-10 md:p-16 pb-0 md:pb-0 overflow-x-hidden">
+                <div className="flex h-full w-full flex-1 flex-col gap-2 dark:border-neutral-700 overflow-y-scroll overflow-x-hidden">
                     {children}
                 </div>
 

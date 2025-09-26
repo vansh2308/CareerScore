@@ -48,7 +48,13 @@ export default function useAllResumes() {
                         size: item.size,
                         updatedAt: item.updated_at,
                         status: item.status,
-                        ownerName: item.users.email
+                        ownerName: item.users.email,
+                        score: {
+                            structureScore: item.structure_score,
+                            relevanceScore: item.relevance_score,
+                            formattingScore: item.formatting_score,
+                            keywordsScore: item.keyword_score
+                        }
                     }))
                 );
 
