@@ -1,3 +1,4 @@
+import { ResumeType, ScoreType } from "@/types";
 import { supabase } from "./supabaseClient";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -59,4 +60,57 @@ export const deleteFile = async (fileId: string) => {
         throw error;
     }
 }
+
+
+
+export const updateResumeScore = async (resumeId: string, newResume: ResumeType) => {
+    try {
+        const { data, error } = await supabase
+            .from('resumes')
+            .update({
+                status: newResume.status,
+                structure_score: newResume.score.structureScore,
+                relevance_score: newResume.score.relevanceScore,
+                formatting_score: newResume.score.formattingScore,
+                keyword_score: newResume.score.keywordsScore,
+                updated_at: newResume.updatedAt
+            })
+            .eq('id', resumeId)
+            .select()
+
+
+        if (error) {
+            throw error
+        }
+        return { success: true, data };
+    } catch (error) {
+        console.error('Error updating resume: ', error);
+        throw error
+    }
+}
+
+
+
+export const addResumeMessage = async (resumeId: string, messageContent: string, uploadedBy: 'admin' | 'owner' ) => {
+    try {
+        const { data, error } = await supabase
+            .from('messages')
+            .insert({
+                resume_id: resumeId,
+                content: messageContent,
+                by: uploadedBy
+            })
+            .select()
+
+        if (error) {
+            throw error
+        }
+        return { data, error }
+
+    } catch (error) {
+        console.error('Error commenting: ', error);
+        throw error
+    }
+}
+
 

@@ -20,6 +20,7 @@ export default function PreviewLayout({
     const { resumeDetails, setResumeDetails, resumeLaoding, resumeError } = useResumeDetails({ resumeId })
 
 
+
     return (
         <div className="w-full flex flex-col overflow-hidden gap-3 min-h-max overflow-y-scroll pb-20">
             <div className="w-full flex justify-between items-end border-b-4  border-muted pb-4">
@@ -55,20 +56,36 @@ export default function PreviewLayout({
                 </div>
             </div>
             <div className="flex mt-10 gap-20">
-
-
                 <div className="relative w-[50%] mt-0  ">
-                    <object
-                        data={`${process.env.NEXT_PUBLIC_SUPABASE_URL!}/storage/v1/object/public/${resumeDetails?.link}#toolbar=0&view=FitH`}
-                        type="application/pdf"
-                        className="w-full aspect-[4/5] rounded-lg shadow-lg"
-                    >
-                        {/* <div className="flex items-center justify-center h-full bg-gray-100 rounded-lg">
-                            <p className="text-gray-500">
-                                PDF preview not available. <a href={`${process.env.NEXT_PUBLIC_SUPABASE_URL!}/storage/v1/object/public/${resumeDetails?.link}#toolbar=0&view=FitH`} className="text-blue-500 hover:underline" target="_blank" rel="noopener noreferrer">Click here to open</a>
-                            </p>
-                        </div> */}
-                    </object>
+
+                    {resumeLaoding ? (
+                        <div className="w-full aspect-[4/5] rounded-lg shadow-lg bg-muted flex items-center justify-center">
+                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-foreground"></div>
+                        </div>
+                    ) : resumeDetails?.link ? (
+                        <object
+                            data={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${resumeDetails.link}#toolbar=0&view=FitH`}
+                            type="application/pdf"
+                            className="w-full aspect-[4/5] rounded-lg shadow-lg"
+                        >
+                            <div className="flex items-center justify-center h-full bg-muted rounded-lg">
+                                <p className="text-gray-500">
+                                    PDF preview not available. <a
+                                        href={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${resumeDetails.link}`}
+                                        className="text-blue-500 hover:underline"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        Click here to open
+                                    </a>
+                                </p>
+                            </div>
+                        </object>
+                    ) : (
+                        <div className="w-full aspect-[4/5] rounded-lg shadow-lg bg-muted flex items-center justify-center">
+                            <p className="text-muted-foreground">No PDF available</p>
+                        </div>
+                    )}
                 </div>
 
 

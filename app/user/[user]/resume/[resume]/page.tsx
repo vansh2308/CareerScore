@@ -19,6 +19,9 @@ import { Textarea } from "@/components/ui/textarea"
 import ChatMessage from "@/components/ui/chatMessage";
 import useResumeDetails from "@/hooks/useResumeDetails";
 import useUserDetails from "@/hooks/useUserDetails";
+import { addResumeMessage, updateResumeScore } from "@/lib/resumeBucket";
+import { toast } from "sonner";
+import useResumeMessages from "@/hooks/useResumeMessages";
 
 
 
@@ -31,73 +34,48 @@ export default function ResumePreviewer() {
     const { resumeDetails, setResumeDetails, resumeLaoding, resumeError } = useResumeDetails({ resumeId })
     const [newMessage, setNewMessage] = useState<string>('')
     const chatBoxRef = useRef<HTMLDivElement>(null)
-    const [ firstRender, setFirstRender ] = useState(true);
-
-    const dummyResumeMessages: ResumeMessage[] = [
-        {
-            by: 'admin',
-            content: "Hare krishna Hare Krishna",
-            timestamp: (new Date()).toUTCString()
-        },
-        {
-            by: 'owner',
-            content: "Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.",
-            timestamp: (new Date()).toUTCString()
-        },
-        {
-            by: 'admin',
-            content: "Hare krishna Hare Krishna",
-            timestamp: (new Date()).toUTCString()
-        },
-        {
-            by: 'owner',
-            content: "Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.",
-            timestamp: (new Date()).toUTCString()
-        },
-        {
-            by: 'admin',
-            content: "Hare krishna Hare Krishna",
-            timestamp: (new Date()).toUTCString()
-        },
-        {
-            by: 'owner',
-            content: "Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.",
-            timestamp: (new Date()).toUTCString()
-        },
-        {
-            by: 'admin',
-            content: "Hare krishna Hare Krishna",
-            timestamp: (new Date()).toUTCString()
-        },
-        {
-            by: 'owner',
-            content: "Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.",
-            timestamp: (new Date()).toUTCString()
-        },
-        {
-            by: 'admin',
-            content: "Hare krishna Hare Krishna",
-            timestamp: (new Date()).toUTCString()
-        },
-        {
-            by: 'owner',
-            content: "Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.",
-            timestamp: (new Date()).toUTCString()
-        },
-    ]
-
-    const [resumeMessages, setResumeMessages] = useState<ResumeMessage[]>(dummyResumeMessages)
+    const [firstRender, setFirstRender] = useState<boolean>(true);    
+    const {resumeMessages, setResumeMessages, resumeMessagesError, resumeMessagesLoading} = useResumeMessages({resumeId})
 
     useEffect(() => {
-        if (firstRender) {
-            setFirstRender(false)
-            return; 
+        if(firstRender) {
+            setTimeout(() => {
+                setFirstRender(false)
+            }, 1000);
+            return
         }
 
-        if (chatBoxRef.current) {
-            chatBoxRef.current.lastElementChild?.scrollIntoView({ behavior: 'smooth' });
-        }
+        setTimeout(() => {
+            if (chatBoxRef.current) {
+                chatBoxRef.current.lastElementChild?.scrollIntoView({ behavior: 'smooth' });
+            }
+        }, 0);
     }, [resumeMessages])
+
+
+
+    const sendMessageHandler = async (e: any) => {
+        try {
+            if(!newMessage.trim()) return
+            const {data, error} =  await addResumeMessage(resumeId, newMessage, userDetails?.role == 'admin' ? 'admin' : 'owner');
+
+            if(error) {
+                throw error
+            }
+
+            setResumeMessages([...resumeMessages, {
+                by: userDetails?.role == 'admin' ? 'admin' : 'owner',
+                content: newMessage,
+                timestamp: (new Date()).toUTCString()
+            }])
+
+            setNewMessage('')
+        } catch (error) {
+            console.log(error)
+        }
+
+
+    }
 
 
 
@@ -310,7 +288,16 @@ export default function ResumePreviewer() {
 
                 <Button
                     variant='default'
-                    className="self-end cursor-pointer bg-blue-400/20 !text-blue-400 hover:bg-blue-400 hover:!text-background text- ml-4">
+                    className="self-end cursor-pointer bg-blue-400/20 !text-blue-400 hover:bg-blue-400 hover:!text-background text- ml-4"
+                    onClick={async (e) => {
+                        setResumeDetails({
+                            ...resumeDetails!,
+                            updatedAt: (new Date()).toUTCString()
+                        })
+                        resumeDetails && await updateResumeScore(resumeId, resumeDetails)
+                        toast("Resume scored!")
+                    }}
+                >
                     Submit
                 </Button>
             </div>
@@ -335,11 +322,7 @@ export default function ResumePreviewer() {
                         value={newMessage}
                     />
                     <Button
-                        onClick={() => setResumeMessages([...resumeMessages, {
-                            by: userDetails?.role == 'admin' ? 'admin' : 'owner',
-                            content: newMessage,
-                            timestamp: (new Date()).toUTCString()
-                        }])}
+                        onClick={(e) => sendMessageHandler(e)}
                         className="cursor-pointer"
                     >
                         Send message

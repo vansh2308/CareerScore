@@ -37,8 +37,6 @@ export default function useAllResumes() {
 
                 if (error) throw error;
 
-                // console.log(data)
-
                 setResumeList(
                     data.map((item) => ({
                         resumeId: item.id,
