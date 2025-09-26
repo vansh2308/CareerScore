@@ -152,7 +152,7 @@ export default function UserDashboard({ user }: { user: string }) {
                                                 </div>
                                             </Badge>
                                         </TableCell>
-                                        <TableCell>
+                                        <TableCell className="flex flex-row-reverse gap-5">
                                             {/* WIP: Add confirmation modal  */}
                                             <IconTrash
                                                 className="w-5 hover:text-destructive"
