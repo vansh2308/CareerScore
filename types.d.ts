@@ -49,3 +49,9 @@ export interface ResumeMessage {
     content: string,
     timestamp: string
 }
+
+export type TokenData = {
+    user_id: string
+    token: string
+    expires_at: Date
+}
