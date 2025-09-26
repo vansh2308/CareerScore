@@ -31,10 +31,11 @@ import { cn } from "@/lib/utils";
 import { useCallback, useState } from "react";
 import { deleteFile } from "@/lib/resumeBucket";
 import { toast } from "sonner";
+import Link from "next/link";
 
 
 
-export default function UserDashboard({user} : {user: string}) {
+export default function UserDashboard({ user }: { user: string }) {
     // const { user } = useParams();
     const { userDetails, loading, error } = useUserDetails({ userId: user as String });
     const { userResumes, setUserResumes, resumeLoading, resumeError, resfreshResumes } = useUserResumes({ userId: user as String });
@@ -128,6 +129,7 @@ export default function UserDashboard({user} : {user: string}) {
                         : <TableBody>
                             {
                                 userResumes.map((resumeItem, key) => (
+
                                     <TableRow className="text-sm text-muted-foreground hover:text-foreground cursor-pointer" key={key}>
                                         <TableCell>{resumeItem.name}</TableCell>
                                         <TableCell>{Math.round(((resumeItem.size as number) / 1024)).toString()} KB</TableCell>
@@ -140,7 +142,7 @@ export default function UserDashboard({user} : {user: string}) {
                                                 <div className="flex gap-2">
                                                     <div className={cn(
                                                         'rounded-full aspect-square w-2',
-                                                        resumeItem.status == 'Approved' ? "bg-green-400" : resumeItem.status == 'Pending' ? 'bg-amber-400' : resumeItem.status == 'Needs Revision' ? 'bg-sky-500' :'bg-red-600'
+                                                        resumeItem.status == 'Approved' ? "bg-green-400" : resumeItem.status == 'Pending' ? 'bg-amber-400' : resumeItem.status == 'Needs Revision' ? 'bg-sky-500' : 'bg-red-600'
                                                     )}></div>
                                                     <p className={cn(
                                                         resumeItem.status == 'Approved' ? "text-green-400" : resumeItem.status == 'Pending' ? 'text-amber-400' : resumeItem.status == 'Needs Revision' ? 'text-sky-500' : 'text-red-600'
@@ -154,8 +156,15 @@ export default function UserDashboard({user} : {user: string}) {
                                             {/* WIP: Add confirmation modal  */}
                                             <IconTrash
                                                 className="w-5 hover:text-destructive"
-                                                onClick={(e) => handleResumeDelete(e, resumeItem.resumeId)}
+                                                onClick={(e) => {
+                                                    e.stopPropagation()
+                                                    handleResumeDelete(e, resumeItem.resumeId)
+                                                }}
                                             />
+
+                                            <Link href={`/user/${user}/resume/${resumeItem.resumeId}`} key={key}>
+                                                <IconEyeFilled className="w-5" />
+                                            </Link>
                                         </TableCell>
                                     </TableRow>
                                 ))
