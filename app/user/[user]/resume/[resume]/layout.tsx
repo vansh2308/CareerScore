@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import useResumeDetails from "@/hooks/useResumeDetails";
 import { cn } from "@/lib/utils";
 import { useParams } from "next/navigation";
-import { useEffect } from "react";
+
 
 // WIP: Add breadcrumb 
 
@@ -15,9 +15,8 @@ export default function PreviewLayout({
     children: React.ReactNode;
 }>) {
     const params = useParams()
-    const userId = params?.user as string
     const resumeId = params?.resume as string
-    const { resumeDetails, setResumeDetails, resumeLaoding, resumeError } = useResumeDetails({ resumeId })
+    const { resumeDetails, resumeLaoding } = useResumeDetails({ resumeId })
 
 
 

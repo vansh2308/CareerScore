@@ -9,17 +9,16 @@ import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
     TableHead,
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { IconPlus, IconTrash, IconEyeFilled, IconPencil, IconRefresh, IconArrowDown, IconArrowUp } from "@tabler/icons-react";
+import { IconPencil, IconRefresh, IconArrowDown, IconArrowUp } from "@tabler/icons-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import useAllResumes from "@/hooks/useAllResumes";
 import { ResumeType } from "@/types";
 import Link from "next/link";
@@ -27,8 +26,8 @@ import Link from "next/link";
 
 
 export default function AdminDashboard({ user }: { user: string }) {
-    const { userDetails, loading, error } = useUserDetails({ userId: user as String });
-    const { resumeList, setResumeList, resumeListLoading, resumeListError, resfreshResumes } = useAllResumes()
+    const { userDetails } = useUserDetails({ userId: user as String });
+    const { resumeList, resumeListLoading, resfreshResumes } = useAllResumes()
     const [resumeListDesc, setResumeListDesc] = useState<boolean>(true)
     const [statusFilters, setStatusFilter] = useState<string[]>([])
     const [resumeListCopy, setReumseListCopy] = useState<ResumeType[]>(resumeList)
@@ -51,8 +50,8 @@ export default function AdminDashboard({ user }: { user: string }) {
         if (statusFilters.length == 0) {
             setReumseListCopy(resumeList)
         } else {
-            setReumseListCopy((resumeListCopy) => (
-                resumeList.filter((resume, resumeIdx) => statusFilters.includes(resume.status))
+            setReumseListCopy(() => (
+                resumeList.filter((resume) => statusFilters.includes(resume.status))
             ))
         }
     }, [statusFilters])

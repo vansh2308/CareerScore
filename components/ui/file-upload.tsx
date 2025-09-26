@@ -101,7 +101,7 @@ export const FileUpload = ({
     if(files[0] && errorMessage == '') {
       // console.log(files[0]);
       try {
-        const {data, error} = await uploadFile(user as String, files[0]);
+        const {error} = await uploadFile(user as String, files[0]);
         if(error) {
           throw error
         }

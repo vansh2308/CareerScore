@@ -1,4 +1,4 @@
-import { ResumeType, ScoreType } from "@/types";
+import { ResumeType } from "@/types";
 import { supabase } from "./supabaseClient";
 import { v4 as uuidv4 } from 'uuid';
 

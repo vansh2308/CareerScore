@@ -4,7 +4,7 @@
 import { supabase } from "./supabaseClient"
 
 
-export const saveToken = async (userId: any, token: String) => {
+export const saveToken = async (userId: string, token: String) => {
     await supabase
         .from('magic_tokens')
         .delete()

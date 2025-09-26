@@ -1,9 +1,6 @@
 'use client'
 
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { ResumeMessage, ScoreType } from "@/types";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -48,11 +45,11 @@ export default function ResumePreviewer() {
     const { userDetails } = useUserDetails({ userId })
     const resumeId = params?.resume as string
     const statusList = ['Pending', 'Approved', 'Rejected', 'Needs Revision']
-    const { resumeDetails, setResumeDetails, resumeLaoding, resumeError } = useResumeDetails({ resumeId })
+    const { resumeDetails, setResumeDetails, resumeLaoding } = useResumeDetails({ resumeId })
     const [newMessage, setNewMessage] = useState<string>('')
     const chatBoxRef = useRef<HTMLDivElement>(null)
     const [firstRender, setFirstRender] = useState<boolean>(true);
-    const { resumeMessages, setResumeMessages, resumeMessagesError, resumeMessagesLoading } = useResumeMessages({ resumeId })
+    const { resumeMessages, setResumeMessages, resumeMessagesLoading } = useResumeMessages({ resumeId })
 
     useEffect(() => {
         if (firstRender) {
@@ -71,10 +68,10 @@ export default function ResumePreviewer() {
 
 
 
-    const sendMessageHandler = async (e: any) => {
+    const sendMessageHandler = async () => {
         try {
             if (!newMessage.trim()) return
-            const { data, error } = await addResumeMessage(resumeId, newMessage, userDetails?.role == 'admin' ? 'admin' : 'owner');
+            const { error } = await addResumeMessage(resumeId, newMessage, userDetails?.role == 'admin' ? 'admin' : 'owner');
 
             if (error) {
                 throw error
@@ -329,7 +326,7 @@ export default function ResumePreviewer() {
                                     userDetails?.role != 'admin' ? 'hidden' : ''
                                 )}
 
-                                onClick={async (e) => {
+                                onClick={async () => {
                                     setResumeDetails({
                                         ...resumeDetails!,
                                         updatedAt: (new Date()).toUTCString()
@@ -435,7 +432,7 @@ export default function ResumePreviewer() {
                         value={newMessage}
                     />
                     <Button
-                        onClick={(e) => sendMessageHandler(e)}
+                        onClick={sendMessageHandler}
                         className="cursor-pointer"
                     >
                         Send message

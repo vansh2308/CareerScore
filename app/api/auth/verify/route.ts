@@ -2,7 +2,7 @@
 
 // app/api/auth/verify.js
 import jwt from 'jsonwebtoken'
-import { getTokenData, deleteUserToken } from "@/lib/database"
+import { getTokenData } from "@/lib/database"
 import { NextResponse } from 'next/server'
 
 

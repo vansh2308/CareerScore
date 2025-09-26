@@ -1,17 +1,16 @@
 "use client";
 
 
-import React, { Children, use, useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
     IconArrowLeft,
     IconBrandTabler,
-    IconSettings,
     IconUserBolt,
 } from "@tabler/icons-react";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 
 
 

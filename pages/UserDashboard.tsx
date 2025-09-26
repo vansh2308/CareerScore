@@ -4,11 +4,9 @@
 
 import useUserDetails from "@/hooks/useUserDetails";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { useParams } from "next/navigation"
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
     TableHead,
     TableHeader,
@@ -18,7 +16,6 @@ import { IconPlus, IconTrash, IconEyeFilled } from "@tabler/icons-react";
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
@@ -36,9 +33,8 @@ import Link from "next/link";
 
 
 export default function UserDashboard({ user }: { user: string }) {
-    // const { user } = useParams();
-    const { userDetails, loading, error } = useUserDetails({ userId: user as String });
-    const { userResumes, setUserResumes, resumeLoading, resumeError, resfreshResumes } = useUserResumes({ userId: user as String });
+    const { userDetails } = useUserDetails({ userId: user as String });
+    const { userResumes, setUserResumes, resumeLoading, resfreshResumes } = useUserResumes({ userId: user as String });
     const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
     const handleUploadSuccess = useCallback(() => {
@@ -48,7 +44,7 @@ export default function UserDashboard({ user }: { user: string }) {
 
     const handleResumeDelete = async (e: React.MouseEvent, targetResumeId: String) => {
         // WIP: Delete from db & bucket 
-        const { success, data } = await deleteFile(targetResumeId as string);
+        const { success } = await deleteFile(targetResumeId as string);
 
         if (success) {
             toast('Resume Deleted')
