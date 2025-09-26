@@ -3,11 +3,8 @@
 ___
 
 #### Todos 
-- [ ] Add Magiclinks Auth0
-- [ ] Add Supabase
-- [ ] Add Profile Setup
-- [ ] Add Resume Upload & Preview 
-- [ ] Dynamic Resumes (Update resume preserving URL)
+- [ ] Middleware
+- [ ] Leaderboard 
 
 
 ### Refs
