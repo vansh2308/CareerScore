@@ -22,7 +22,10 @@ export default function DashboardLayout({
 }>) {
     return (
         <main className="w-screen h-screen overflow-hidden">
-            <SidebarDemo children={children} />
+            {/* <SidebarDemo children={children} /> */}
+            <SidebarDemo>
+                {children}
+            </SidebarDemo>
         </main>
     );
 }
@@ -78,7 +81,10 @@ export function SidebarDemo({ children }: Readonly<{ children: React.ReactNode }
                     </div>
                 </SidebarBody>
             </Sidebar>
-            <Dashboard children={children} />
+            <Dashboard>
+                {children}
+            </Dashboard>
+
         </div>
     );
 }
