@@ -21,7 +21,7 @@ export default function Leaderboard() {
 
             <h3 className="mt-20 font-bold text-lg text-muted-foreground">Leaderboard 🔥</h3>
 
-            <Table className="mt-3">
+            <Table className="mt-3 mb-28">
                 <TableHeader>
                     <TableRow>
                         <TableHead>Rank</TableHead>
