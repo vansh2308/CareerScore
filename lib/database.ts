@@ -29,7 +29,10 @@ export const getUserByEmail = async (email: string) => {
         if (error && error.code !== 'PGRST116') throw error;
 
         if (data == null) {
-            const { data, error } = await supabase.from('users').insert({ email: email }).select().single();
+            const allowed_admins = process.env.NEXT_PUBLIC_ALLOWED_ADMINS;
+            const role = allowed_admins?.split(' ').includes(email) ? 'admin' : 'regular';
+
+            const { data, error } = await supabase.from('users').insert({ email: email, role: role }).select().single();
             if (error) throw error;
 
             return data;
