@@ -22,6 +22,7 @@ import { useEffect, useState } from "react";
 import useAllResumes from "@/hooks/useAllResumes";
 import { ResumeType } from "@/types";
 import Link from "next/link";
+import Leaderboard from "@/components/ui/leaderboard";
 
 
 
@@ -206,6 +207,8 @@ export default function AdminDashboard({ user }: { user: string }) {
                 resumeListCopy.length == 0 && !resumeListLoading &&
                 <p className="w-full text-center mt-10 font-bold text-muted-foreground/30 text-sm ">{'You\'re all caught up!'}</p>
             }
+
+            <Leaderboard />
 
         </main>
     )

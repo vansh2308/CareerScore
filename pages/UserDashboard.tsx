@@ -29,6 +29,9 @@ import { useCallback, useState } from "react";
 import { deleteFile } from "@/lib/resumeBucket";
 import { toast } from "sonner";
 import Link from "next/link";
+import useAllResumes from "@/hooks/useAllResumes";
+import { Separator } from "@/components/ui/separator";
+import Leaderboard from "@/components/ui/leaderboard";
 
 
 
@@ -36,6 +39,7 @@ export default function UserDashboard({ user }: { user: string }) {
     const { userDetails } = useUserDetails({ userId: user });
     const { userResumes, setUserResumes, resumeLoading, resfreshResumes } = useUserResumes({ userId: user });
     const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+    
 
     const handleUploadSuccess = useCallback(() => {
         setIsDialogOpen(false)
@@ -94,8 +98,8 @@ export default function UserDashboard({ user }: { user: string }) {
             </div>
 
 
-            <Table className="mt-5">
-                <TableHeader className="font-bold">
+            <Table>
+                <TableHeader>
                     <TableRow>
                         <TableHead className="w-[30%]">Name</TableHead>
                         <TableHead>Size</TableHead>
@@ -122,7 +126,8 @@ export default function UserDashboard({ user }: { user: string }) {
                                 ))
                             }
                         </TableBody>
-                        : <TableBody>
+                        :
+                        <TableBody>
                             {
                                 userResumes.map((resumeItem, key) => (
 
@@ -174,6 +179,7 @@ export default function UserDashboard({ user }: { user: string }) {
                 <p className="w-full text-center mt-10 font-bold text-muted-foreground/30 text-sm ">Nothing to show. Upload a resume!</p>
             }
 
+            <Leaderboard />
 
 
         </main>

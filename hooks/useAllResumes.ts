@@ -27,7 +27,11 @@ export default function useAllResumes() {
                     link, 
                     size, 
                     status, 
-                    users(email)
+                    users(email),
+                    structure_score,
+                    relevance_score,
+                    formatting_score,
+                    keyword_score
                 `)
                 .order('updated_at', { ascending: false })
                 .returns<DatabaseResumeResponse[]>();
