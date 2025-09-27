@@ -29,8 +29,6 @@ import { useCallback, useState } from "react";
 import { deleteFile } from "@/lib/resumeBucket";
 import { toast } from "sonner";
 import Link from "next/link";
-import useAllResumes from "@/hooks/useAllResumes";
-import { Separator } from "@/components/ui/separator";
 import Leaderboard from "@/components/ui/leaderboard";
 
 

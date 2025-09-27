@@ -8,7 +8,7 @@ import { ResumeType } from "@/types";
 // WIP: Add self refresh 
 
 export default function Leaderboard() {
-    const { resumeList, setResumeList, resumeListLoading, resumeListError  }  = useAllResumes()
+    const { resumeList, resumeListLoading  }  = useAllResumes()
 
     const totalScore = (resumeItem: ResumeType) => {
         return resumeItem.score.formattingScore + resumeItem.score.keywordsScore + resumeItem.score.relevanceScore + resumeItem.score.structureScore
