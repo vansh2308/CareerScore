@@ -19,7 +19,7 @@ export default function Leaderboard() {
         <>
             <Separator className="h-3" />
 
-            <h3 className="mt-20 font-bold text-lg text-muted-foreground">Leaderboard</h3>
+            <h3 className="mt-20 font-bold text-lg text-muted-foreground">Leaderboard 🔥</h3>
 
             <Table className="mt-3">
                 <TableHeader>

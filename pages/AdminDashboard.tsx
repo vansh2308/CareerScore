@@ -14,7 +14,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { IconPencil, IconRefresh, IconArrowDown, IconArrowUp } from "@tabler/icons-react";
+import { IconPencil, IconRefresh, IconArrowDown, IconArrowUp, IconArrowRight, IconArrowLeft } from "@tabler/icons-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -23,6 +23,7 @@ import useAllResumes from "@/hooks/useAllResumes";
 import { ResumeType } from "@/types";
 import Link from "next/link";
 import Leaderboard from "@/components/ui/leaderboard";
+import { Button } from "@/components/ui/button";
 
 
 
@@ -33,6 +34,10 @@ export default function AdminDashboard({ user }: { user: string }) {
     const [statusFilters, setStatusFilter] = useState<string[]>([])
     const [resumeListCopy, setReumseListCopy] = useState<ResumeType[]>(resumeList)
     const filterList = ['Pending', 'Approved', 'Rejected', 'Needs Revision']
+    const pageSize = 15;
+    const [offset, setOffset] = useState<number>(0);
+
+
 
 
     useEffect(() => {
@@ -125,31 +130,32 @@ export default function AdminDashboard({ user }: { user: string }) {
             </div>
 
 
-            <Table className="mt-5  overflow-y-scroll">
-                <TableHeader className="font-bold">
-                    <TableRow>
-                        <TableHead className="min-w-max">Name</TableHead>
-                        <TableHead className="min-w-max">Owner</TableHead>
-                        <TableHead className="w-[5%]">Size</TableHead>
-                        <TableHead className="mr-5 flex gap-2 items-center">
-                            Last Updated
-                            {resumeListDesc ?
-                                <IconArrowDown
-                                    className="w-[1rem] cursor-pointer"
-                                    onClick={() => setResumeListDesc(!resumeListDesc)}
-                                />
-                                : <IconArrowUp
-                                    className="w-[1rem] cursor-pointer"
-                                    onClick={() => setResumeListDesc(!resumeListDesc)}
-                                />}
-                        </TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead className="w-[5%]"></TableHead>
-                    </TableRow>
-                </TableHeader>
 
-                {
-                    resumeListLoading ?
+
+            {
+                resumeListLoading ?
+                    <Table className="mt-5  overflow-y-scroll">
+                        <TableHeader className="font-bold">
+                            <TableRow>
+                                <TableHead className="min-w-max">Name</TableHead>
+                                <TableHead className="min-w-max">Owner</TableHead>
+                                <TableHead className="w-[5%]">Size</TableHead>
+                                <TableHead className="mr-5 flex gap-2 items-center">
+                                    Last Updated
+                                    {resumeListDesc ?
+                                        <IconArrowDown
+                                            className="w-[1rem] cursor-pointer"
+                                            onClick={() => setResumeListDesc(!resumeListDesc)}
+                                        />
+                                        : <IconArrowUp
+                                            className="w-[1rem] cursor-pointer"
+                                            onClick={() => setResumeListDesc(!resumeListDesc)}
+                                        />}
+                                </TableHead>
+                                <TableHead>Status</TableHead>
+                                <TableHead className="w-[5%]"></TableHead>
+                            </TableRow>
+                        </TableHeader>
                         <TableBody>
                             {
                                 [...Array(5)].map((row, key) => (
@@ -165,43 +171,91 @@ export default function AdminDashboard({ user }: { user: string }) {
                                 ))
                             }
                         </TableBody>
-                        : <TableBody>
-                            {
-                                resumeListCopy.map((resumeItem, key) => (
-                                    <TableRow className="text-sm text-muted-foreground hover:text-foreground cursor-pointer" key={key}>
-                                        <TableCell>{resumeItem.name}</TableCell>
-                                        <TableCell>{resumeItem.ownerName.split('@')[0]}</TableCell>
-                                        <TableCell>{Math.round(((resumeItem.size as number) / 1024)).toString()} KB</TableCell>
-                                        <TableCell>{(new Date(resumeItem.updatedAt as string).toLocaleString()).toString()}</TableCell>
-                                        <TableCell>
-                                            <Badge
-                                                variant="secondary"
-                                                className={resumeItem.status == 'Approved' ? "bg-green-400/10" : resumeItem.status == 'Pending' ? 'bg-amber-400/10' : resumeItem.status == 'Needs Revision' ? 'bg-sky-600/10' : 'bg-red-600/10'}
-                                                asChild>
-                                                <div className="flex gap-2">
-                                                    <div className={cn(
-                                                        'rounded-full aspect-square w-2',
-                                                        resumeItem.status == 'Approved' ? "bg-green-400" : resumeItem.status == 'Pending' ? 'bg-amber-400' : resumeItem.status == 'Needs Revision' ? 'bg-sky-500' : 'bg-red-600'
-                                                    )}></div>
-                                                    <p className={cn(
-                                                        resumeItem.status == 'Approved' ? "text-green-400" : resumeItem.status == 'Pending' ? 'text-amber-400' : resumeItem.status == 'Needs Revision' ? 'text-sky-500' : 'text-red-600'
-                                                    )}>
-                                                        {resumeItem.status}
-                                                    </p>
-                                                </div>
-                                            </Badge>
-                                        </TableCell>
-                                        <TableCell>
-                                            <Link href={`/user/${user}/resume/${resumeItem.resumeId}`}>
-                                                <IconPencil className="w-5" />
-                                            </Link>
-                                        </TableCell>
-                                    </TableRow>
-                                ))
-                            }
-                        </TableBody>
-                }
-            </Table>
+                    </Table>
+                    :
+                    <div className="flex flex-col">
+                        <Table className="mt-5  overflow-y-scroll">
+                            <TableHeader className="font-bold">
+                                <TableRow>
+                                    <TableHead className="min-w-max">Name</TableHead>
+                                    <TableHead className="min-w-max">Owner</TableHead>
+                                    <TableHead className="w-[5%]">Size</TableHead>
+                                    <TableHead className="mr-5 flex gap-2 items-center">
+                                        Last Updated
+                                        {resumeListDesc ?
+                                            <IconArrowDown
+                                                className="w-[1rem] cursor-pointer"
+                                                onClick={() => setResumeListDesc(!resumeListDesc)}
+                                            />
+                                            : <IconArrowUp
+                                                className="w-[1rem] cursor-pointer"
+                                                onClick={() => setResumeListDesc(!resumeListDesc)}
+                                            />}
+                                    </TableHead>
+                                    <TableHead>Status</TableHead>
+                                    <TableHead className="w-[5%]"></TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {
+                                    resumeListCopy.slice(offset, offset + pageSize).map((resumeItem, key) => (
+                                        <TableRow className="text-sm text-muted-foreground hover:text-foreground cursor-pointer" key={key}>
+                                            <TableCell>{resumeItem.name}</TableCell>
+                                            <TableCell>{resumeItem.ownerName.split('@')[0]}</TableCell>
+                                            <TableCell>{Math.round(((resumeItem.size as number) / 1024)).toString()} KB</TableCell>
+                                            <TableCell>{(new Date(resumeItem.updatedAt as string).toLocaleString()).toString()}</TableCell>
+                                            <TableCell>
+                                                <Badge
+                                                    variant="secondary"
+                                                    className={resumeItem.status == 'Approved' ? "bg-green-400/10" : resumeItem.status == 'Pending' ? 'bg-amber-400/10' : resumeItem.status == 'Needs Revision' ? 'bg-sky-600/10' : 'bg-red-600/10'}
+                                                    asChild>
+                                                    <div className="flex gap-2">
+                                                        <div className={cn(
+                                                            'rounded-full aspect-square w-2',
+                                                            resumeItem.status == 'Approved' ? "bg-green-400" : resumeItem.status == 'Pending' ? 'bg-amber-400' : resumeItem.status == 'Needs Revision' ? 'bg-sky-500' : 'bg-red-600'
+                                                        )}></div>
+                                                        <p className={cn(
+                                                            resumeItem.status == 'Approved' ? "text-green-400" : resumeItem.status == 'Pending' ? 'text-amber-400' : resumeItem.status == 'Needs Revision' ? 'text-sky-500' : 'text-red-600'
+                                                        )}>
+                                                            {resumeItem.status}
+                                                        </p>
+                                                    </div>
+                                                </Badge>
+                                            </TableCell>
+                                            <TableCell>
+                                                <Link href={`/user/${user}/resume/${resumeItem.resumeId}`}>
+                                                    <IconPencil className="w-5" />
+                                                </Link>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))
+                                }
+                            </TableBody>
+                        </Table>
+
+                        <div className="flex gap-4 mt-5 self-end items-center">
+                            <span className="text-xs text-muted-foreground/50">
+                                {offset+1} - {Math.min(offset + pageSize, resumeListCopy.length)} of {resumeListCopy.length}
+                            </span>
+                            <Button
+                                variant='secondary'
+                                className="rounded-full aspect-square min-h-max cursor-pointer"
+                                disabled={offset - pageSize < 0}
+                                onClick={() => setOffset(offset - pageSize)}
+                            >
+                                <IconArrowLeft className="w-[0.5rem]" />
+                            </Button>
+                            <Button
+                                variant='secondary'
+                                className="rounded-full aspect-square min-h-max cursor-pointer"
+                                disabled={offset + pageSize > resumeListCopy.length}
+                                onClick={() => setOffset(offset + pageSize)}
+                            >
+                                <IconArrowRight className="w-[0.5rem]" />
+                            </Button>
+                        </div>
+                    </div>
+            }
 
             {
                 resumeListCopy.length == 0 && !resumeListLoading &&
