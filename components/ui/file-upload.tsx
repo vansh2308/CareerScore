@@ -43,7 +43,7 @@ export const FileUpload = ({
   const user = params?.user as string;
   const [files, setFiles] = useState<File[]>([]);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [errorMessage, setErrorMessage] = useState<String>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
 
@@ -101,7 +101,7 @@ export const FileUpload = ({
     if(files[0] && errorMessage == '') {
       // console.log(files[0]);
       try {
-        const {error} = await uploadFile(user as String, files[0]);
+        const {error} = await uploadFile(user, files[0]);
         if(error) {
           throw error
         }

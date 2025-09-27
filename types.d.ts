@@ -1,20 +1,20 @@
 
 
 export interface UserDetailType {
-    userId: String,
-    email: String,
+    userId: string,
+    email: string,
     role: 'admin' | 'regular'
 }
 
 export interface ResumeType {
-    resumeId: String,
-    link: String,
-    name: String,
-    ownerId: String,
-    size: Number,
-    updatedAt: String,
+    resumeId: string,
+    link: string,
+    name: string,
+    ownerId: string,
+    size: number,
+    updatedAt: string,
     status: 'Pending' | 'Approved' | 'Rejected' | 'Needs Revision',
-    ownerName: String,
+    ownerName: string,
     score: ScoreType
 }
 

@@ -11,8 +11,8 @@ export function PlaceholdersAndVanishInput({
 }) {
 
   const [currentPlaceholder, setCurrentPlaceholder] = useState(0);
-  const [email, setEmail] = useState<String>("")
-  const [message, setMessage] = useState<String>('')
+  const [email, setEmail] = useState<string>("")
+  const [message, setMessage] = useState<string>('')
 
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);

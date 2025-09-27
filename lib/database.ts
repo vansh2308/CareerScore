@@ -4,7 +4,7 @@
 import { supabase } from "./supabaseClient"
 
 
-export const saveToken = async (userId: string, token: String) => {
+export const saveToken = async (userId: string, token: string) => {
     await supabase
         .from('magic_tokens')
         .delete()
@@ -23,7 +23,7 @@ export const saveToken = async (userId: string, token: String) => {
     return data
 }
 
-export const getUserByEmail = async (email: String) => {
+export const getUserByEmail = async (email: string) => {
     try {
         const { data, error } = await supabase.from('users').select().eq('email', email).single();
         if (error && error.code !== 'PGRST116') throw error;
@@ -44,7 +44,7 @@ export const getUserByEmail = async (email: String) => {
 }
 
 
-export const getTokenData = async (token: String) => {
+export const getTokenData = async (token: string) => {
     const { data, error } = await supabase
         .from('magic_tokens')
         .select()
@@ -62,7 +62,7 @@ export const getTokenData = async (token: String) => {
     return data
 }
 
-export const deleteUserToken = async (token: String) => {
+export const deleteUserToken = async (token: string) => {
     const { data, error } = await supabase.from('magic_tokens').delete().match({ token: token })
 
     if (error) throw new Error(error.message)

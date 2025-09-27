@@ -9,7 +9,7 @@ import { useEffect, useState } from "react"
 export default function useResumeMessages({
     resumeId
 }: {
-    resumeId: String
+    resumeId: string
 }) {
 
     const [resumeMessages, setResumeMessages] = useState<ResumeMessage[]>([]);

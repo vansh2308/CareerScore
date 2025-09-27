@@ -26,7 +26,7 @@ import Link from "next/link";
 
 
 export default function AdminDashboard({ user }: { user: string }) {
-    const { userDetails } = useUserDetails({ userId: user as String });
+    const { userDetails } = useUserDetails({ userId: user });
     const { resumeList, resumeListLoading, resfreshResumes } = useAllResumes()
     const [resumeListDesc, setResumeListDesc] = useState<boolean>(true)
     const [statusFilters, setStatusFilter] = useState<string[]>([])
@@ -204,7 +204,7 @@ export default function AdminDashboard({ user }: { user: string }) {
 
             {
                 resumeListCopy.length == 0 && !resumeListLoading &&
-                <p className="w-full text-center mt-10 font-bold text-muted-foreground/30 text-sm ">You're all caught up!</p>
+                <p className="w-full text-center mt-10 font-bold text-muted-foreground/30 text-sm ">{'You\'re all caught up!'}</p>
             }
 
         </main>

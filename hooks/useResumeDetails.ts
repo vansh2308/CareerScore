@@ -9,7 +9,7 @@ import { useEffect, useState } from "react"
 export default function useResumeDetails({
     resumeId
 }: {
-    resumeId: String
+    resumeId: string
 }) {
 
     const [resumeDetails, setResumeDetails] = useState<ResumeType | null>(null);

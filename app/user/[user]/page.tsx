@@ -13,7 +13,7 @@ import AdminDashboard from "@/pages/AdminDashboard";
 export default function Dashboard() {
     const params = useParams()
     const user = params?.user as string
-    const { userDetails } = useUserDetails({ userId: user as String });
+    const { userDetails } = useUserDetails({ userId: user });
 
     return (
         userDetails?.role == 'admin' ?

@@ -3,7 +3,7 @@ import { supabase } from "./supabaseClient";
 import { v4 as uuidv4 } from 'uuid';
 
 // Upload file using standard upload
-export const uploadFile = async (ownerId: String, file: File) => {
+export const uploadFile = async (ownerId: string, file: File) => {
     const fileId = uuidv4();
     const { data, error } = await supabase.storage.from('resume').upload(`${fileId}`, file)
     if (error) {
@@ -21,7 +21,7 @@ export const uploadFile = async (ownerId: String, file: File) => {
 }
 
 
-export const addFile = async (ownerId: String, fileID: string, file: File, fileLink: String) => {
+export const addFile = async (ownerId: string, fileID: string, file: File, fileLink: string) => {
 
     const { data, error } = await supabase.from('resumes').insert({
         id: fileID,

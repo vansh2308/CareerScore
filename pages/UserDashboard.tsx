@@ -33,8 +33,8 @@ import Link from "next/link";
 
 
 export default function UserDashboard({ user }: { user: string }) {
-    const { userDetails } = useUserDetails({ userId: user as String });
-    const { userResumes, setUserResumes, resumeLoading, resfreshResumes } = useUserResumes({ userId: user as String });
+    const { userDetails } = useUserDetails({ userId: user });
+    const { userResumes, setUserResumes, resumeLoading, resfreshResumes } = useUserResumes({ userId: user });
     const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
     const handleUploadSuccess = useCallback(() => {
@@ -42,9 +42,9 @@ export default function UserDashboard({ user }: { user: string }) {
         resfreshResumes();
     }, [resfreshResumes])
 
-    const handleResumeDelete = async (e: React.MouseEvent, targetResumeId: String) => {
+    const handleResumeDelete = async (e: React.MouseEvent, targetResumeId: string) => {
         // WIP: Delete from db & bucket 
-        const { success } = await deleteFile(targetResumeId as string);
+        const { success } = await deleteFile(targetResumeId);
 
         if (success) {
             toast('Resume Deleted')

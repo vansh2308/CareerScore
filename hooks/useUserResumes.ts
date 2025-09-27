@@ -9,7 +9,7 @@ import { useCallback, useEffect, useState } from "react"
 export default function useUserResumes({
     userId
 }: {
-    userId: String
+    userId: string
 }) {
 
     const [userResumes, setUserResumes] = useState<ResumeType[]>([]);

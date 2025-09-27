@@ -8,7 +8,7 @@ import { useEffect, useState } from "react"
 export default function useUserDetails({
     userId
 }: {
-    userId: String
+    userId: string
 }) {
 
     const [userDetails, setUserDetails] = useState<UserDetailType | null>(null);
