@@ -47,7 +47,7 @@ export async function POST(req: Request) {
 
     service: "gmail",
     auth: {
-      user: "vanshagarwal11@gmail.com",
+      user: process.env.NODEMAILER_EMAIL,
       pass: process.env.GOOGLE_APP_PASSWORD,
     },
   })
